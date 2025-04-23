@@ -1,4 +1,6 @@
 from flask import Flask, request
+import requests
+import json
 
 app = Flask(__name__)
 VERIFY_TOKEN = 'my_verify_token'
@@ -12,11 +14,14 @@ def webhook():
 
     if request.method == 'POST':
         data = request.json
-        print("Received:", data)
+        print("🔥 Новое событие от Meta:", json.dumps(data, indent=2, ensure_ascii=False))
 
-        # Прокидываем в Make (замени URL ниже)
-        import requests
-        requests.post('https://hook.make.com/your-make-webhook', json=data)
+        # Отправка в Make
+        requests.post(
+            'https://hook.us2.make.com/cb3nu9327q1lzukvfwnu0m3nt7cgxvc0',
+            json=data,
+            headers={'Content-Type': 'application/json'}
+        )
 
         return 'OK', 200
 
